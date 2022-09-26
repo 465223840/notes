@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        a {
+            text-decoration: none
+        }
+
+        .wrap {
+            width: 500px;
+            margin: 50px auto;
+        }
+
+        .tab {
+            height: 50px;
+        }
+
+        .clearfix::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        .tab .tab-item {
+            float: left;
+            width: 100px;
+            height: 50px;
+        }
+
+        .tab .tab-item a {
+            display: block;
+            height: 100%;
+            line-height: 50px;
+            text-align: center;
+            color: #000;
+        }
+
+        .tab .tab-item.cur {
+            background-color: #000;
+        }
+
+        .tab .tab-item.cur a {
+            color: #fff;
+        }
+
+        .page {
+            height: 300px;
+            border: 1px solid #000;
+        }
+
+        .page .page-item {
+            display: none;
+            text-align: center;
+            line-height: 300px;
+            font-size: 60px;
+            font-weight: bold;
+        }
+
+        .page .page-item.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrap">
+        <div class="tab clearfix">
+            <div class="tab-item cur">
+                <a href="javascript:;">1</a>
+            </div>
+            <div class="tab-item">
+                <a href="javascript:;">2</a>
+            </div>
+            <div class="tab-item">
+                <a href="javascript:;">3</a>
+            </div>
+        </div>
+        <div class="page">
+            <div class="page-item show">
+                1
+            </div>
+            <div class=" page-item ">
+                2
+            </div>
+            <div class="page-item">
+                3
+            </div>
+        </div>
+    </div>
+    <script>
+        var oTab = document.getElementsByClassName('tab')[0],
+            oTabItems = document.getElementsByClassName('tab-item'),
+            oPageItems = document.getElementsByClassName('page-item'),
+            oTabItemLen = oTabItems.length
+        oTab.onclick = function (e) {
+            var e = e || window.event,
+                tar = e.target || e.srcElement,
+                oParent = tar.parentNode,
+                item
+            if (tar.nodeName.toLowerCase() === 'a') {
+                for (let i = 0; i < oTabItemLen; i++) {
+                    item = oTabItems[i];
+                    item.className = 'tab-item'
+
+                    oPageItems[i].className = 'page-item'
+                }
+
+                oParent.className += ' cur'
+                var tarIdx = [].indexOf.call(oTabItems, oParent)
+                oPageItems[tarIdx].className += ' show'
+            }
+        }
+    </script>
+</body>
+
+</html>

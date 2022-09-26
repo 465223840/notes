@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <input type="text" name="">
+        <button>增加li</button>
+    </div>
+    <div>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+    <script type='text/javascript'>
+        var oBtn = document.getElementsByTagName('button')[0];
+        var oIpt = document.getElementsByTagName('input')[0];
+        var oUl = document.getElementsByTagName('ul')[0];
+        var isEdit,
+            editItem = null
+        oBtn.onclick = function (e) {
+            var val = trimSpace(oIpt.value)
+            if (val.length > 0) {
+                if (!isEdit) {
+                    var item = createLi(val)
+                    oUl.appendChild(item)
+                    restore()
+                } else {
+                    setChildNode(editItem.parentNode);
+                }
+            }
+        }
+        oUl.onclick = function (e) {
+            var e = e || window.event,
+                tar = e.target || e.srcElement,
+                parentEl = tar.parentNode
+            switch (trimSpace(tar.innerHTML)) {
+                case '编辑':
+                    var el = parentEl.getElementsByTagName('span')[0]
+                    var oList = getChildNodes(oUl)
+                    var index = Array.prototype.indexOf.call(oList, parentEl)
+                    console.log(index, oList, parentEl);
+                    edit(el, index)
+                    break;
+                case '删除':
+                    parentEl.remove(tar)
+                    restore()
+                    break;
+                default:
+                    break;
+            }
+        }
+        function setChildNode(el) {
+            // var list = document.getElementsByTagName('li')
+            // for (let i = 0; i < list.length; i++) {
+            //     if (list[i] === el) {
+            //         console.log('就是它');
+
+            //     }
+            // }
+
+            var _el = el.getElementsByTagName('span')[0]
+            _el.innerHTML = oIpt.value
+            restore()
+        }
+        function getChildNodes(el) {
+            var childList = el.childNodes,
+                arr = [],
+                len = childList.length,
+                item;
+            for (let i = 0; i < len; i++) {
+                item = childList[i]
+                if (item.nodeType === 1) {
+                    arr.push(item)
+                }
+            }
+            return arr
+        }
+        function edit(el, index) {
+            isEdit = true
+            oIpt.value = el.innerHTML;
+            editItem = el;
+            oBtn.innerHTML = '编辑第' + (index + 1) + '项'
+        }
+        function restore() {
+            oIpt.value = '';
+            oBtn.innerHTML = '增加li'
+            isEdit = false
+        }
+        function trimSpace(str) {
+            return str.replace(/\s/g, '')
+        }
+        function createLi(str) {
+            var li = document.createElement('li');
+            var span = document.createElement('span');
+            span.innerHTML = str
+            // li.style.display = ''
+            var editBtn = document.createElement('a');
+            editBtn.innerHTML = '  编辑'
+            var delBtn = document.createElement('a');
+            delBtn.innerHTML = '  删除'
+            li.appendChild(span)
+            li.appendChild(editBtn)
+            li.appendChild(delBtn)
+            return li;
+        }
+    </script>
+</body>
+
+</html>
